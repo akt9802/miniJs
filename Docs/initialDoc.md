@@ -7,7 +7,7 @@ line by line. It runs inside a web page, the **MiniJS Playground**:
 
 - On the **left**, a visitor types JavaScript-like code.
 - On the **right**, the page shows how the engine processes that code: tokens,
-  the syntax tree, step-by-step execution, scopes, the call stack, and output.
+the syntax tree, step-by-step execution, scopes, the call stack, and output.
 
 MiniJS is **not** a copy of Google V8. V8 is a huge production engine with JIT
 compilers and a garbage collector. MiniJS follows the same basic idea in a
@@ -58,14 +58,14 @@ You need a project where:
 ## 4. Motivation
 
 - **Learn C++ by building:** a lexer, parser, and interpreter use almost every
-  important C++ feature: classes, enums, smart pointers, `std::variant`,
-  containers, recursion, and error handling.
+important C++ feature: classes, enums, smart pointers, `std::variant`,
+containers, recursion, and error handling.
 - **Understand JavaScript deeply:** scope, precedence, function calls, and
-  `const` behavior become obvious once you implement them.
+`const` behavior become obvious once you implement them.
 - **Make it explainable:** a live demo proves you understand the engine far
-  better than a code listing does.
+better than a code listing does.
 - **Make it shareable:** a link to a working playground is easy to show to
-  anyone.
+anyone.
 
 ---
 
@@ -75,6 +75,7 @@ By the end of this project you will have:
 
 1. A working interpreter that runs `.mini` programs from the command line.
 2. A public web page where anyone can write code and watch the engine process
+
    it, running in the browser through WebAssembly.
 3. A clear mental model of how a JavaScript engine turns text into behavior.
 4. Real C++ experience, written entirely by you.
@@ -118,7 +119,7 @@ bigger picture.
 
 ### 6.3 How the playground works
 
-A browser cannot run C++ directly, so the engine is compiled to
+A browser cannot run C++directly, so the engine is compiled to
 **WebAssembly (WASM)** with Emscripten. The same C++ code then runs in the
 visitor's browser, with no server.
 
@@ -139,7 +140,7 @@ Key points:
 - The engine runs inside a **Web Worker**, so an infinite loop cannot freeze the page.
 - Because the trace is saved, stepping backward is as easy as stepping forward.
 - No server means no hosting cost, no security risk from running strangers' code
-  on your machine, and a simple static deployment (for example GitHub Pages).
+on your machine, and a simple static deployment (for example GitHub Pages).
 
 ### 6.4 Build order
 
@@ -209,10 +210,10 @@ minijs/
 Important design rule from day one: split the C++ code into two parts.
 
 - **Core library** (`engine.cpp` and everything it uses): takes source text,
-  returns a result object with the output, the trace, and any errors. It never
-  prints, never reads files, and never calls `exit`.
+returns a result object with the output, the trace, and any errors. It never
+prints, never reads files, and never calls `exit`.
 - **Thin wrappers**: `main.cpp` (command line) and `wasm_api.cpp` (browser) only
-  call the core library.
+call the core library.
 
 If you follow this rule, adding WebAssembly later is a small step.
 
@@ -301,7 +302,7 @@ show those events in the visualizer.** Do not move on until all three work.
 - Report syntax errors with line and column. Never crash.
 - Write the AST into the trace as a tree.
 - If parsing fails, keep the tokens already in the trace, so the visualizer can
-  still show them.
+still show them.
 
 **Visualizer**
 
@@ -369,13 +370,13 @@ Visitors will type anything, including infinite loops and broken code. Prepare
 the engine for that.
 
 - Add a **step limit**: stop with a clear error after a fixed number of
-  evaluation steps (for example, `while (true) {}` must end with an error).
+evaluation steps (for example, `while (true) {}` must end with an error).
 - Add a **call depth limit**: stop runaway recursion before the C++ stack overflows.
 - Add a **trace size limit**: stop recording after a fixed number of events and
-  tell the user that the trace was cut.
+tell the user that the trace was cut.
 - Improve error messages for lexical, syntax, and runtime errors.
 - Test a clean build on a fresh clone, with warnings enabled and sanitizers on
-  (`-fsanitize=address,undefined`).
+(`-fsanitize=address,undefined`).
 
 **Done when:** no program a visitor can type crashes the engine or runs forever.
 
@@ -385,7 +386,7 @@ the engine for that.
 
 - Install Emscripten.
 - In `wasm_api.cpp`, export one function that takes source text and returns the
-  result (trace JSON) as a string.
+result (trace JSON) as a string.
 - Compile the core library to `.wasm` and a `.js` loader into `playground/public/`.
 - Build the whole thing from one script or CMake preset, so you can repeat it easily.
 
@@ -404,9 +405,9 @@ browser and shows its trace.
 
 - Split-screen layout: editor on the left, visualizer panels on the right.
 - Re-run the engine automatically a short time after the user stops typing
-  (debounce, for example about half a second), or with a Run button.
+(debounce, for example about half a second), or with a Run button.
 - Show errors next to the right source line, and keep partial results (tokens,
-  AST) visible when possible.
+AST) visible when possible.
 - Add a dropdown with the example programs.
 - Show a list of supported syntax.
 - Make the layout work on a narrow screen (panels stack vertically).
@@ -418,13 +419,13 @@ how the engine processed it without any explanation from you.
 ### Optional extensions (only after Milestone 8)
 
 - **Bytecode compiler and stack VM:** the closest idea to V8's Ignition.
-  The playground can show the instruction list and the operand stack.
+The playground can show the instruction list and the operand stack.
 - **Closures:** let a function keep access to its creation scope.
 - **Objects and arrays:** the natural next language feature.
 - **Syntax highlighting** in the editor (a CodeMirror wrapper is the easiest
-  React-friendly option).
+React-friendly option).
 - **Benchmarks:** compare the tree-walk interpreter with the VM. Report real
-  numbers only.
+numbers only.
 
 ---
 
@@ -565,12 +566,14 @@ Start with a simple custom test runner. Move to GoogleTest only if you want to.
 ## 14. Rules for building it yourself
 
 1. Write every line yourself, including the C++ engine, tests, and the React page.
+
    Use help only for explanations, ideas, and code review of what you wrote.
 2. Do not copy a full interpreter from a tutorial.
 3. Finish each milestone's tests before starting the next one.
 4. Keep a short notes file with decisions you made and bugs you fixed.
 5. Compile often with warnings on (`-Wall -Wextra`) and fix them.
 6. When you are stuck, make the smallest possible example and print the tokens,
+
    the AST, or the trace.
 7. Keep the core library clean: no printing, no file access, no `exit`.
 
@@ -585,7 +588,7 @@ Problem -> Limitation -> Idea -> Implementation -> Trade-off -> Next step
 ## 15. Final Thoughts
 
 **What this project really is.** MiniJS is a way to learn how languages work
-and to learn C++ at the same time. The playground makes it special: a stranger
+and to learn C++at the same time. The playground makes it special: a stranger
 can type code and see the engine work, without reading any C++.
 
 **What you will be able to explain at the end.**
